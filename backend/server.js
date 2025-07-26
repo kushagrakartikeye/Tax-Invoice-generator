@@ -37,10 +37,11 @@ const customerSchema = new mongoose.Schema({
   createdAt: { type: Date, default: Date.now }
 });
 
-// UPDATED: Invoice Schema with discount support
+// Invoice Schema with manual invoice number
 const invoiceSchema = new mongoose.Schema({
   customerName: String,
   customerPhone: String,
+  invoiceNumber: { type: String, required: true }, // Manual invoice number
   year: Number,
   month: Number,
   day: Number,
@@ -50,11 +51,11 @@ const invoiceSchema = new mongoose.Schema({
     hsn: String,
     quantity: Number,
     unitPrice: Number,
-    discountPercent: { type: Number, default: 0 }, // Added discount field
+    discountPercent: { type: Number, default: 0 },
     taxable: Number
   }],
   subtotal: Number,
-  gstPercent: { type: Number, default: 5 }, // Added GST percent field
+  gstPercent: { type: Number, default: 5 },
   gst: Number,
   total: Number,
   invoiceImagePath: String,
@@ -70,7 +71,7 @@ if (!fs.existsSync(invoicesDir)) {
   fs.mkdirSync(invoicesDir);
 }
 
-// UPDATED: PDF generation with evenly spaced table columns
+// FIXED: PDF generation with manual invoice number (CRITICAL FIX)
 function generateInvoiceImage(invoiceData, filename) {
   return new Promise((resolve, reject) => {
     const doc = new PDFDocument({ size: 'A4', margin: 40 });
@@ -114,12 +115,14 @@ function generateInvoiceImage(invoiceData, filename) {
       doc.fontSize(10).fillColor('#6200EE').text('LOGO ERROR', 475, 80);
     }
 
-    // Invoice Title and Details (UNCHANGED)
+    // CRITICAL FIX: Invoice Title and Details with MANUAL invoice number
     doc.fontSize(24).fillColor('#6200EE').text('TAX INVOICE', 40, 200);
     
     doc.rect(350, 190, 200, 70).fillAndStroke('#f8f9ff', '#6200EE');
     doc.fontSize(12).fillColor('black');
-    doc.text(`Invoice #: NAARI-${Date.now().toString().slice(-6)}`, 360, 205);
+    
+    // FIXED: Use manual invoice number instead of auto-generated
+    doc.text(`Invoice #: ${invoiceData.invoiceNumber}`, 360, 205); // THIS WAS THE BUG!
     doc.text(`Date: ${invoiceData.dateString}`, 360, 225);
     doc.text(`Time: ${new Date().toLocaleTimeString()}`, 360, 245);
 
@@ -134,7 +137,7 @@ function generateInvoiceImage(invoiceData, filename) {
     // Payment Info (UNCHANGED)
     doc.fontSize(12).fillColor('#666').text('Payment Method: Cash/UPI/Card', 350, 325);
 
-    // FIXED: Table Header with evenly spaced columns
+    // Table Header with evenly spaced columns (UNCHANGED)
     let yPosition = 380;
     doc.rect(35, yPosition - 10, 520, 30).fill('#6200EE');
     
@@ -147,7 +150,7 @@ function generateInvoiceImage(invoiceData, filename) {
     doc.text('Disc%', 420, yPosition);
     doc.text('Amount (Rs)', 460, yPosition);
     
-    // FIXED: Table Items with evenly spaced columns
+    // Table Items with evenly spaced columns (UNCHANGED)
     yPosition += 35;
     doc.fillColor('black');
     
@@ -175,7 +178,7 @@ function generateInvoiceImage(invoiceData, filename) {
     // Add spacing before totals (UNCHANGED)
     yPosition += 20;
 
-    // UPDATED: Totals Section with dynamic GST percentage
+    // Totals Section with dynamic GST percentage (UNCHANGED)
     const totalsStartX = 350;
     
     // Subtotal (UNCHANGED)
@@ -309,13 +312,30 @@ app.delete('/api/customers/:id', async (req, res) => {
   }
 });
 
-// Save invoice
+// Save invoice with duplicate prevention and manual invoice number
 app.post('/api/invoices', async (req, res) => {
   try {
     const invoiceData = req.body;
-    const filename = `invoice_${Date.now()}.pdf`;
     
-    // Generate PDF
+    // Check for existing invoice with same invoice number to prevent duplicates
+    const existingInvoice = await Invoice.findOne({ 
+      invoiceNumber: invoiceData.invoiceNumber,
+      customerName: invoiceData.customerName,
+      dateString: invoiceData.dateString
+    });
+    
+    if (existingInvoice) {
+      console.log('Invoice already exists, returning existing invoice');
+      return res.json({ 
+        ...existingInvoice.toObject(), 
+        invoiceUrl: `/invoices/${existingInvoice.invoiceImagePath}` 
+      });
+    }
+    
+    // Generate unique filename using invoice number instead of timestamp
+    const filename = `invoice_${invoiceData.invoiceNumber.replace(/[^a-zA-Z0-9]/g, '_')}_${Date.now()}.pdf`;
+    
+    // FIXED: Generate PDF with manual invoice number
     await generateInvoiceImage(invoiceData, filename);
     
     // Save to database
