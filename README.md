@@ -6,7 +6,7 @@
   ![React Native](https://img.shields.io/badge/React%20Native-0.80.2-blue)
   ![Node.js](https://img.shields.io/badge/Node.js-18+-green)
   ![MongoDB](https://img.shields.io/badge/MongoDB-Atlas-darkgreen)
-  ![Typescript](https://img.shields.io/badge/license-Typescript-purple)
+  ![Typescript](https://img.shields.io/badge/Typescript-0.80.2-purple)
   ![Platform](https://img.shields.io/badge/platform-Android-brightgreen)
 
   <img src="https://via.placeholder.com/800x400/6200EE/FFFFFF?text=NAARI+FABS+GST+Billing+App" alt="NAARI FABS App Banner" width="100%">
