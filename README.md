@@ -9,7 +9,8 @@
   ![Typescript](https://img.shields.io/badge/Typescript-0.80.2-purple)
   ![Platform](https://img.shields.io/badge/platform-Android-brightgreen)
 
-  <img src="https://via.placeholder.com/800x400/6200EE/FFFFFF?text=NAARI+FABS+GST+Billing+App" alt="NAARI FABS App Banner" width="100%">
+  <img src="![WhatsApp Image 2025-07-14 at 22 41 03_026b2eb3](https://github.com/user-attachments/assets/08d93a96-31de-44bf-b8fc-984f04b0d08a)
+text=NAARI+FABS+GST+Billing+App" alt="NAARI FABS App Banner" width="100%">
 
   <p>A comprehensive mobile application designed for GST-compliant invoicing with automated PDF generation, WhatsApp sharing, and secure cloud integration.</p>
 </div>
