@@ -49,14 +49,19 @@ graph TD
 **Tools**: PDFKit, Render, Android Studio
 
 ---
+## Working Demo Video
+https://github.com/user-attachments/assets/e93a7c00-8056-406e-a814-ecdb8473a371
 
 ## 📱 Screenshots
 <div align="center">
 <table>
 <tr>
-<td><img src="https://via.placeholder.com/300x500/6200EE/FFFFFF?text=Customer+Management" width="250"><br><strong>Customer Management</strong></td>
-<td><img src="https://via.placeholder.com/300x500/25D366/FFFFFF?text=Invoice+Generation" width="250"><br><strong>Invoice Generation</strong></td>
-<td><img src="https://via.placeholder.com/300x500/FF6B6B/FFFFFF?text=PDF+Output" width="250"><br><strong>PDF Output</strong></td>
+<td><img src="![WhatsApp Image 2025-07-29 at 23 35 46_e6609e9b](https://github.com/user-attachments/assets/55750f13-029e-41c5-9657-ade3ea92cc49)
+" width="250"><br><strong>Customer Management</strong></td>
+<td><img src="![WhatsApp Image 2025-07-29 at 23 35 47_0f1ab4f5](https://github.com/user-attachments/assets/fe920cf4-64ce-4fdf-b184-330e2621fa9c)
+" width="250"><br><strong>Invoice Generation</strong></td>
+<td><img src="![WhatsApp Image 2025-07-29 at 23 35 47_4f853fa6](https://github.com/user-attachments/assets/be266c18-b253-4a36-b599-1683b9e12266)
+"><br><strong>PDF Output</strong></td>
 </tr>
 </table>
 </div>
